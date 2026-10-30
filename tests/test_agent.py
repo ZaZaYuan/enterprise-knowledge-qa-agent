@@ -1,13 +1,15 @@
 import json
+import os
 import sys
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 from knowledge_agent.agent import KnowledgeAgent
-from knowledge_agent.providers import MockClient
+from knowledge_agent.providers import DeepSeekClient, MockClient
 from knowledge_agent.store import DocumentStore
 
 
@@ -65,6 +67,33 @@ class AgentTests(unittest.TestCase):
         result = KnowledgeAgent(self.store, MockClient(), max_tool_calls=1).run("报销期限多久？")
         self.assertEqual(result["status"], "incomplete")
         self.assertEqual(result["tool_calls"], 1)
+
+    def test_deepseek_adapter_sends_required_tool_call_without_leaking_key(self):
+        class FakeResponse:
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                return False
+
+            def read(self):
+                return b'{"choices":[{"message":{"role":"assistant","tool_calls":[]}}]}'
+
+        captured = []
+
+        def fake_urlopen(request, timeout):
+            captured.append(request)
+            return FakeResponse()
+
+        with patch.dict(os.environ, {"DEEPSEEK_API_KEY": "test-only-token"}), patch(
+            "knowledge_agent.providers.urllib.request.urlopen", side_effect=fake_urlopen
+        ):
+            response = DeepSeekClient().complete([{"role": "user", "content": "测试"}], [])
+        self.assertEqual(response["role"], "assistant")
+        payload = json.loads(captured[0].data)
+        self.assertEqual(payload["tool_choice"], "required")
+        self.assertEqual(payload["thinking"], {"type": "disabled"})
+        self.assertNotIn("test-only-token", captured[0].data.decode("utf-8"))
 
 
 if __name__ == "__main__":

@@ -2,7 +2,7 @@
 
 面向制度/FAQ 问答的可运行 CLI。Agent 使用模型选择“检索 → 阅读原文 → 核对冲突 → 回答/追问/停止”的下一步动作；程序提供只读工具、执行上限、逐字引用验证和可复查 Trace。资料全部是合成示例，不含真实公司信息。
 
-> 当前交付状态：本地离线 Mock 路径、工具、测试和文档已完成。`examples/mock/` 的运行记录只验证流程；真实 DeepSeek 模型记录须在本机配置新密钥后执行，未执行前不声称真实模型效果。GitHub 地址和最终提交 SHA 待建立新仓库后填写。
+> 当前交付状态：本地离线 Mock 路径、工具、测试和文档已完成。`examples/mock/` 的运行记录只验证流程；真实 DeepSeek 模型记录须在本机配置新密钥后执行，未执行前不声称真实模型效果。仓库地址为 <https://github.com/ZaZaYuan/enterprise-knowledge-qa-agent>；最终验收提交以仓库的 `main` 分支 SHA 为准。
 
 ## 30 秒运行
 
@@ -77,4 +77,4 @@ python examples/generate_mock_examples.py
 
 ## 提交说明
 
-本题要求单独 GitHub 仓库 URL 与最终 commit SHA。建立新仓库后提交此目录全部源码、`data/`、`tests/`、`examples/`、`docs/`、依赖说明和 README；不要提交密钥或真实隐私数据。仓库公开时评阅者可直接读取，否则需按题目要求给评阅账号访问权限。最终填写已核对的仓库 URL 与 SHA，不能沿用上一题的仓库或提交号。
+本题要求单独 GitHub 仓库 URL 与最终 commit SHA。仓库为 <https://github.com/ZaZaYuan/enterprise-knowledge-qa-agent>；`main.py`、`src/`、`data/`、`tests/`、`examples/`、`docs/`、依赖说明和 README 位于同一仓库。`.github/workflows/ci.yml` 在 push 与 pull request 时运行标准库测试和 Mock 示例。不要提交密钥或真实隐私数据。最终填写已核对的仓库 URL 与 SHA，不能沿用上一题的仓库或提交号。

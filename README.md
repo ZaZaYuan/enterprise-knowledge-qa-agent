@@ -72,20 +72,7 @@ docs/                          需求、方案、评估、AI 使用和复盘
 
 提交材料位于同一个仓库。`requirements.txt` 记录核心运行无第三方依赖；`.env.example` 仅列出变量名，不含密钥。`run-output/` 被 Git 忽略，供本机试运行。可用 `python examples/generate_mock_examples.py` 重建 Mock 示例。
 
-```mermaid
-flowchart LR
-  U[用户问题与可选历史] --> M[DeepSeek 模型选择动作]
-  M --> T{只读工具}
-  T --> S[检索资料]
-  T --> R[读取原文]
-  T --> C[核对冲突]
-  S --> O[观察结果与 Trace]
-  R --> O
-  C --> O
-  O --> M
-  M --> V[提交答案与证据校验]
-  V --> A[回答／追问／故障／未完成]
-```
+![企业知识问答 Agent 的检索、阅读、冲突核对与回答流程](docs/agent-flow.svg)
 
 | 题目验收点 | 实现与可核查证据 |
 | --- | --- |

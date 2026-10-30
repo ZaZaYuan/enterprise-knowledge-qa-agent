@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 520" role="img" aria-labelledby="title desc">
+  <title id="title">企业知识问答 Agent 执行流程</title>
+  <desc id="desc">用户问题进入 DeepSeek 模型。模型选择检索、阅读或冲突核对工具，观察工具结果后继续决策；提交答案须经过证据校验，最终返回回答、追问或未完成状态。</desc>
+  <defs>
+    <linearGradient id="background" x2="1" y2="1">
+      <stop stop-color="#f8faf6"/>
+      <stop offset="1" stop-color="#edf4ed"/>
+    </linearGradient>
+    <linearGradient id="agent" x2="1" y2="1">
+      <stop stop-color="#245b50"/>
+      <stop offset="1" stop-color="#347965"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#568173"/>
+    </marker>
+    <style>
+      text { font-family: "Microsoft YaHei", "Noto Sans CJK SC", "PingFang SC", sans-serif; }
+      .eyebrow { fill: #6a9281; font-size: 14px; font-weight: 700; letter-spacing: 2px; }
+      .heading { fill: #193a36; font-size: 28px; font-weight: 700; }
+      .label { fill: #173d36; font-size: 20px; font-weight: 700; }
+      .detail { fill: #5d766c; font-size: 15px; }
+      .light { fill: #fff; }
+      .line { fill: none; stroke: #568173; stroke-width: 3; marker-end: url(#arrow); }
+      .loop { fill: none; stroke: #8caf9e; stroke-width: 2.5; stroke-dasharray: 7 6; marker-end: url(#arrow); }
+    </style>
+  </defs>
+  <rect width="1280" height="520" rx="24" fill="url(#background)"/>
+  <rect x="1" y="1" width="1278" height="518" rx="23" fill="none" stroke="#d6e3d7" stroke-width="2"/>
+  <text x="42" y="52" class="eyebrow">EVIDENCE FIRST · AGENT WORKFLOW</text>
+  <text x="42" y="91" class="heading">从提问到可核查的回答</text>
+
+  <rect x="42" y="164" width="178" height="114" rx="17" fill="#fff" stroke="#d3e2d4" stroke-width="2"/>
+  <text x="66" y="207" class="label">用户问题</text>
+  <text x="66" y="238" class="detail">可携带对话历史</text>
+
+  <rect x="275" y="164" width="208" height="114" rx="17" fill="url(#agent)"/>
+  <text x="299" y="207" class="label light">模型选择动作</text>
+  <text x="299" y="238" class="detail light">根据观察决定下一步</text>
+
+  <rect x="540" y="133" width="310" height="176" rx="18" fill="#fff" stroke="#d3e2d4" stroke-width="2"/>
+  <text x="565" y="169" class="eyebrow">READ-ONLY TOOLS</text>
+  <rect x="563" y="184" width="264" height="33" rx="8" fill="#eaf3ec"/>
+  <text x="577" y="206" class="detail">01  检索候选文档</text>
+  <rect x="563" y="224" width="264" height="33" rx="8" fill="#eaf3ec"/>
+  <text x="577" y="246" class="detail">02  阅读原文与版本</text>
+  <rect x="563" y="264" width="264" height="33" rx="8" fill="#eaf3ec"/>
+  <text x="577" y="286" class="detail">03  核对适用范围与冲突</text>
+
+  <rect x="909" y="164" width="327" height="114" rx="17" fill="#fff" stroke="#d3e2d4" stroke-width="2"/>
+  <text x="933" y="207" class="label">观察工具结果</text>
+  <text x="933" y="238" class="detail">记录参数、摘要和决策依据</text>
+
+  <path d="M 220 221 H 270" class="line"/>
+  <path d="M 483 221 H 535" class="line"/>
+  <path d="M 850 221 H 904" class="line"/>
+  <path d="M 1072 164 V 119 H 378 V 159" class="loop"/>
+  <rect x="563" y="102" width="176" height="28" rx="14" fill="#e4eee5"/>
+  <text x="583" y="121" class="detail">观察后继续选择动作</text>
+
+  <path d="M 379 278 V 358" class="line"/>
+  <rect x="275" y="364" width="383" height="111" rx="17" fill="#fff" stroke="#d3e2d4" stroke-width="2"/>
+  <text x="300" y="407" class="label">提交答案 · 证据校验</text>
+  <text x="300" y="438" class="detail">引用、冲突与执行上限检查</text>
+
+  <path d="M 658 420 H 724" class="line"/>
+  <rect x="730" y="364" width="506" height="111" rx="17" fill="#dcebe0" stroke="#c7ddcc" stroke-width="2"/>
+  <text x="755" y="407" class="label">最终状态</text>
+  <text x="755" y="438" class="detail">有依据的回答 / 追问 / 故障 / 未完成</text>
+</svg>

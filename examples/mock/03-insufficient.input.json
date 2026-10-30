@@ -1,0 +1,5 @@
+{
+  "question": "每月可以远程办公几天？",
+  "provider": "OFFLINE_MOCK",
+  "fail_tool": null
+}

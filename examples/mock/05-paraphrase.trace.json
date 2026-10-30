@@ -1,0 +1,101 @@
+{
+  "question": "事假需要提前多久报批？",
+  "status": "answered",
+  "answer": "普通事假至少提前 2 个工作日向直属主管申请。",
+  "citations": [
+    {
+      "doc_id": "L01",
+      "quote": "普通事假应至少提前 2 个工作日向直属主管提交申请。"
+    }
+  ],
+  "missing_info": [],
+  "model": "OFFLINE_MOCK",
+  "steps": 3,
+  "tool_calls": 3,
+  "trace": [
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 1,
+      "action": "search_docs",
+      "arguments": {
+        "query": "事假需要提前多久报批？",
+        "top_k": 5,
+        "basis": "先查找相关制度"
+      },
+      "summary": "检索到 1 份候选资料",
+      "result": {
+        "matches": [
+          {
+            "doc_id": "L01",
+            "title": "员工请假制度",
+            "version": "2026-02-15",
+            "scope": "所有正式员工；普通事假",
+            "score": 2.0,
+            "preview": "普通事假应至少提前 2 个工作日向直属主管提交申请。",
+            "claim_keys": [
+              "personal_leave_notice"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 2,
+      "action": "read_doc",
+      "arguments": {
+        "doc_id": "L01",
+        "basis": "读取请假制度原文"
+      },
+      "summary": "已读取 L01 原文",
+      "result": {
+        "document": {
+          "id": "L01",
+          "title": "员工请假制度",
+          "version": "2026-02-15",
+          "scope": "所有正式员工；普通事假",
+          "status": "生效中",
+          "supersedes": [],
+          "sections": [
+            {
+              "id": "L01-1",
+              "text": "普通事假应至少提前 2 个工作日向直属主管提交申请。"
+            },
+            {
+              "id": "L01-2",
+              "text": "突发紧急情况可先电话告知主管，并在返岗后补交申请。"
+            }
+          ],
+          "claims": [
+            {
+              "key": "personal_leave_notice",
+              "value": "2 个工作日",
+              "quote": "普通事假应至少提前 2 个工作日向直属主管提交申请。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 3,
+      "action": "submit_answer",
+      "arguments": {
+        "status": "answered",
+        "answer": "普通事假至少提前 2 个工作日向直属主管申请。",
+        "citations": [
+          {
+            "doc_id": "L01",
+            "quote": "普通事假应至少提前 2 个工作日向直属主管提交申请。"
+          }
+        ],
+        "missing_info": [],
+        "basis": "原文直接回答该问题"
+      },
+      "summary": "最终答案已通过引用与冲突校验",
+      "result": {
+        "accepted": true
+      }
+    }
+  ]
+}

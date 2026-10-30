@@ -1,0 +1,97 @@
+{
+  "question": "每月可以远程办公几天？",
+  "status": "insufficient",
+  "answer": "现有说明没有规定每月可远程办公的天数，请向所在部门确认。",
+  "citations": [
+    {
+      "doc_id": "R01",
+      "quote": "本说明未规定每月可远程办公的天数。"
+    }
+  ],
+  "missing_info": [
+    "所在部门关于每月远程办公天数的通知"
+  ],
+  "model": "OFFLINE_MOCK",
+  "steps": 3,
+  "tool_calls": 3,
+  "trace": [
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 1,
+      "action": "search_docs",
+      "arguments": {
+        "query": "每月可以远程办公几天？",
+        "top_k": 5,
+        "basis": "先查找相关制度"
+      },
+      "summary": "检索到 1 份候选资料",
+      "result": {
+        "matches": [
+          {
+            "doc_id": "R01",
+            "title": "远程办公说明",
+            "version": "2026-05-10",
+            "scope": "所有员工；远程办公",
+            "score": 14.0,
+            "preview": "员工可申请远程办公，具体审批流程以所在部门通知为准。",
+            "claim_keys": []
+          }
+        ]
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 2,
+      "action": "read_doc",
+      "arguments": {
+        "doc_id": "R01",
+        "basis": "核对远程办公说明"
+      },
+      "summary": "已读取 R01 原文",
+      "result": {
+        "document": {
+          "id": "R01",
+          "title": "远程办公说明",
+          "version": "2026-05-10",
+          "scope": "所有员工；远程办公",
+          "status": "生效中",
+          "supersedes": [],
+          "sections": [
+            {
+              "id": "R01-1",
+              "text": "员工可申请远程办公，具体审批流程以所在部门通知为准。"
+            },
+            {
+              "id": "R01-2",
+              "text": "本说明未规定每月可远程办公的天数。"
+            }
+          ],
+          "claims": []
+        }
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 3,
+      "action": "submit_answer",
+      "arguments": {
+        "status": "insufficient",
+        "answer": "现有说明没有规定每月可远程办公的天数，请向所在部门确认。",
+        "citations": [
+          {
+            "doc_id": "R01",
+            "quote": "本说明未规定每月可远程办公的天数。"
+          }
+        ],
+        "missing_info": [
+          "所在部门关于每月远程办公天数的通知"
+        ],
+        "basis": "文档明确未给出所问数值"
+      },
+      "summary": "最终答案已通过引用与冲突校验",
+      "result": {
+        "accepted": true
+      }
+    }
+  ]
+}

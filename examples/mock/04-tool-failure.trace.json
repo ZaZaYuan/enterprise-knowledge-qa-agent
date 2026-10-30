@@ -1,0 +1,46 @@
+{
+  "question": "一般费用报销期限多久？",
+  "status": "tool_error",
+  "answer": "检索工具暂时不可用，无法核实制度原文。",
+  "citations": [],
+  "missing_info": [
+    "请稍后重试检索"
+  ],
+  "model": "OFFLINE_MOCK",
+  "steps": 2,
+  "tool_calls": 2,
+  "trace": [
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 1,
+      "action": "search_docs",
+      "arguments": {
+        "query": "一般费用报销期限多久？",
+        "top_k": 5,
+        "basis": "先查找相关制度"
+      },
+      "summary": "search_docs 暂时不可用（演示故障）",
+      "result": {
+        "error": "search_docs 暂时不可用（演示故障）"
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 2,
+      "action": "submit_answer",
+      "arguments": {
+        "status": "tool_error",
+        "answer": "检索工具暂时不可用，无法核实制度原文。",
+        "citations": [],
+        "missing_info": [
+          "请稍后重试检索"
+        ],
+        "basis": "工具故障使证据不足"
+      },
+      "summary": "最终答案已通过引用与冲突校验",
+      "result": {
+        "accepted": true
+      }
+    }
+  ]
+}

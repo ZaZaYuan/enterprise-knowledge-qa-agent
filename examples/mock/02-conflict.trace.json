@@ -1,0 +1,208 @@
+{
+  "question": "一般费用报销期限多久？",
+  "status": "conflict",
+  "answer": "D01 规定 30 个自然日，D02 规定 15 个自然日；两份材料适用范围相同，未说明替代关系，暂不能确定统一期限。请确认应采用哪份制度。",
+  "citations": [
+    {
+      "doc_id": "D01",
+      "quote": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。"
+    },
+    {
+      "doc_id": "D02",
+      "quote": "一般费用报销应在费用发生后 15 个自然日内提交，适用于所有正式员工。"
+    }
+  ],
+  "missing_info": [
+    "D01 与 D02 的优先级或替代关系"
+  ],
+  "model": "OFFLINE_MOCK",
+  "steps": 5,
+  "tool_calls": 5,
+  "trace": [
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 1,
+      "action": "search_docs",
+      "arguments": {
+        "query": "一般费用报销期限多久？",
+        "top_k": 5,
+        "basis": "先查找相关制度"
+      },
+      "summary": "检索到 3 份候选资料",
+      "result": {
+        "matches": [
+          {
+            "doc_id": "D01",
+            "title": "员工费用报销制度（2026 年 1 月版）",
+            "version": "2026-01-01",
+            "scope": "所有正式员工；一般费用报销",
+            "score": 14.0,
+            "preview": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。",
+            "claim_keys": [
+              "general_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "D02",
+            "title": "员工费用报销常见问题（2026 年 3 月版）",
+            "version": "2026-03-01",
+            "scope": "所有正式员工；一般费用报销",
+            "score": 14.0,
+            "preview": "一般费用报销应在费用发生后 15 个自然日内提交，适用于所有正式员工。",
+            "claim_keys": [
+              "general_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "D03",
+            "title": "差旅费用操作指南",
+            "version": "2026-04-01",
+            "scope": "差旅费用；已完成差旅的员工",
+            "score": 5.0,
+            "preview": "差旅费用应在返程后 10 个自然日内提交报销申请。",
+            "claim_keys": [
+              "travel_reimbursement_deadline"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 2,
+      "action": "read_doc",
+      "arguments": {
+        "doc_id": "D01",
+        "basis": "核对报销期限的原文"
+      },
+      "summary": "已读取 D01 原文",
+      "result": {
+        "document": {
+          "id": "D01",
+          "title": "员工费用报销制度（2026 年 1 月版）",
+          "version": "2026-01-01",
+          "scope": "所有正式员工；一般费用报销",
+          "status": "未标明废止",
+          "supersedes": [],
+          "sections": [
+            {
+              "id": "D01-1",
+              "text": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。"
+            },
+            {
+              "id": "D01-2",
+              "text": "申请须附原始票据，并由直属主管审批。"
+            }
+          ],
+          "claims": [
+            {
+              "key": "general_reimbursement_deadline",
+              "value": "30 个自然日",
+              "quote": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 3,
+      "action": "read_doc",
+      "arguments": {
+        "doc_id": "D02",
+        "basis": "核对报销期限的原文"
+      },
+      "summary": "已读取 D02 原文",
+      "result": {
+        "document": {
+          "id": "D02",
+          "title": "员工费用报销常见问题（2026 年 3 月版）",
+          "version": "2026-03-01",
+          "scope": "所有正式员工；一般费用报销",
+          "status": "未标明废止",
+          "supersedes": [],
+          "sections": [
+            {
+              "id": "D02-1",
+              "text": "一般费用报销应在费用发生后 15 个自然日内提交，适用于所有正式员工。"
+            },
+            {
+              "id": "D02-2",
+              "text": "如逾期，应联系财务团队确认处理方式。"
+            }
+          ],
+          "claims": [
+            {
+              "key": "general_reimbursement_deadline",
+              "value": "15 个自然日",
+              "quote": "一般费用报销应在费用发生后 15 个自然日内提交，适用于所有正式员工。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 4,
+      "action": "check_conflicts",
+      "arguments": {
+        "doc_ids": [
+          "D01",
+          "D02"
+        ],
+        "basis": "两份制度给出不同期限"
+      },
+      "summary": "发现 1 组冲突",
+      "result": {
+        "checked_ids": [
+          "D01",
+          "D02"
+        ],
+        "conflicts": [
+          {
+            "key": "general_reimbursement_deadline",
+            "left": {
+              "doc_id": "D01",
+              "value": "30 个自然日",
+              "quote": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。"
+            },
+            "right": {
+              "doc_id": "D02",
+              "value": "15 个自然日",
+              "quote": "一般费用报销应在费用发生后 15 个自然日内提交，适用于所有正式员工。"
+            },
+            "resolution": "unresolved",
+            "note": "仅凭版本日期不能认定新文档覆盖旧文档"
+          }
+        ]
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 5,
+      "action": "submit_answer",
+      "arguments": {
+        "status": "conflict",
+        "answer": "D01 规定 30 个自然日，D02 规定 15 个自然日；两份材料适用范围相同，未说明替代关系，暂不能确定统一期限。请确认应采用哪份制度。",
+        "citations": [
+          {
+            "doc_id": "D01",
+            "quote": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。"
+          },
+          {
+            "doc_id": "D02",
+            "quote": "一般费用报销应在费用发生后 15 个自然日内提交，适用于所有正式员工。"
+          }
+        ],
+        "missing_info": [
+          "D01 与 D02 的优先级或替代关系"
+        ],
+        "basis": "冲突检查结果为 unresolved"
+      },
+      "summary": "最终答案已通过引用与冲突校验",
+      "result": {
+        "accepted": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,134 @@
+{
+  "question": "差旅报销应在返程后几天提交？",
+  "status": "answered",
+  "answer": "差旅费用应在返程后 10 个自然日内提交报销申请。",
+  "citations": [
+    {
+      "doc_id": "D03",
+      "quote": "差旅费用应在返程后 10 个自然日内提交报销申请。"
+    }
+  ],
+  "missing_info": [],
+  "model": "OFFLINE_MOCK",
+  "steps": 3,
+  "tool_calls": 3,
+  "trace": [
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 1,
+      "action": "search_docs",
+      "arguments": {
+        "query": "差旅报销应在返程后几天提交？",
+        "top_k": 5,
+        "basis": "先查找相关制度"
+      },
+      "summary": "检索到 4 份候选资料",
+      "result": {
+        "matches": [
+          {
+            "doc_id": "D03",
+            "title": "差旅费用操作指南",
+            "version": "2026-04-01",
+            "scope": "差旅费用；已完成差旅的员工",
+            "score": 11.0,
+            "preview": "差旅费用应在返程后 10 个自然日内提交报销申请。",
+            "claim_keys": [
+              "travel_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "D02",
+            "title": "员工费用报销常见问题（2026 年 3 月版）",
+            "version": "2026-03-01",
+            "scope": "所有正式员工；一般费用报销",
+            "score": 7.0,
+            "preview": "一般费用报销应在费用发生后 15 个自然日内提交，适用于所有正式员工。",
+            "claim_keys": [
+              "general_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "D01",
+            "title": "员工费用报销制度（2026 年 1 月版）",
+            "version": "2026-01-01",
+            "scope": "所有正式员工；一般费用报销",
+            "score": 6.0,
+            "preview": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。",
+            "claim_keys": [
+              "general_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "L01",
+            "title": "员工请假制度",
+            "version": "2026-02-15",
+            "scope": "所有正式员工；普通事假",
+            "score": 2.0,
+            "preview": "普通事假应至少提前 2 个工作日向直属主管提交申请。",
+            "claim_keys": [
+              "personal_leave_notice"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 2,
+      "action": "read_doc",
+      "arguments": {
+        "doc_id": "D03",
+        "basis": "读取差旅报销适用范围和期限"
+      },
+      "summary": "已读取 D03 原文",
+      "result": {
+        "document": {
+          "id": "D03",
+          "title": "差旅费用操作指南",
+          "version": "2026-04-01",
+          "scope": "差旅费用；已完成差旅的员工",
+          "status": "生效中",
+          "supersedes": [],
+          "sections": [
+            {
+              "id": "D03-1",
+              "text": "差旅费用应在返程后 10 个自然日内提交报销申请。"
+            },
+            {
+              "id": "D03-2",
+              "text": "差旅报销需同时提交行程单与票据。"
+            }
+          ],
+          "claims": [
+            {
+              "key": "travel_reimbursement_deadline",
+              "value": "10 个自然日",
+              "quote": "差旅费用应在返程后 10 个自然日内提交报销申请。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-30T08:40:39+00:00",
+      "step": 3,
+      "action": "submit_answer",
+      "arguments": {
+        "status": "answered",
+        "answer": "差旅费用应在返程后 10 个自然日内提交报销申请。",
+        "citations": [
+          {
+            "doc_id": "D03",
+            "quote": "差旅费用应在返程后 10 个自然日内提交报销申请。"
+          }
+        ],
+        "missing_info": [],
+        "basis": "差旅制度原文直接回答该问题"
+      },
+      "summary": "最终答案已通过引用与冲突校验",
+      "result": {
+        "accepted": true
+      }
+    }
+  ]
+}

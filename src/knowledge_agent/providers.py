@@ -82,7 +82,7 @@ class MockClient:
         }
 
     def complete(self, messages: list[dict], tools: list[dict]) -> dict:
-        question = next(m["content"] for m in messages if m["role"] == "user")
+        question = next(m["content"] for m in reversed(messages) if m["role"] == "user")
         tool_messages = [json.loads(m["content"]) for m in messages if m["role"] == "tool"]
         if not tool_messages:
             return self._call("search_docs", {"query": question, "top_k": 5, "basis": "先查找相关制度"})
@@ -96,6 +96,16 @@ class MockClient:
             for result in tool_messages
             if "document" in result
         }
+        if "紧急" in question and any(
+            "事假" in m["content"] for m in messages if m["role"] == "user"
+        ):
+            if "L01" not in read_ids:
+                return self._call("read_doc", {"doc_id": "L01", "basis": "结合前文读取事假紧急情况条款"})
+            return self._call("submit_answer", {
+                "status": "answered", "answer": "普通事假遇突发紧急情况，可先电话告知主管，并在返岗后补交申请。",
+                "citations": [{"doc_id": "L01", "quote": "突发紧急情况可先电话告知主管，并在返岗后补交申请。"}],
+                "missing_info": [], "basis": "L01 原文直接说明紧急情况",
+            })
         if "差旅" in question and "报销" in question:
             if "D03" not in read_ids:
                 return self._call("read_doc", {"doc_id": "D03", "basis": "读取差旅报销适用范围和期限"})

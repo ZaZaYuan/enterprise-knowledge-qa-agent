@@ -15,6 +15,10 @@ CLI 问题
 
 可选工具：`search_docs`、`read_doc`、`check_conflicts`、`submit_answer`。模型选动作，工具执行骨架是固定的。正常请假问题可走“检索—读 L01—回答”；一般报销问题应走“检索—读 D01—读 D02—核对冲突—追问”。这是两个不同的工具路径。若模型提前提交答案，程序的引用和冲突校验会拒绝并返回可见错误，允许模型调整下一步。
 
+`run(question, history)` 接受可选前序 user/assistant 文本消息，用于“那紧急情况呢？”等追问。CLI 用 `--history` 读取 JSON，展示界面在当前页面内保留最近 8 条问答；传入的历史角色和长度均经校验，不能注入 system/tool 角色。
+
+本地展示界面由 `webui.py` 启动，`web.py` 仅监听 `127.0.0.1`，前端 `web/` 用原生 HTML/CSS/JS 显示答案、原文卡片和决策轨迹。HTTP `POST /api/ask` 调用与 CLI 相同的 Agent；浏览器不接触 API 密钥。CLI 仍是最小可复现入口，展示界面用于人工审阅和截图。
+
 ## 数据与证据
 
 `data/documents.json` 含 `id/title/version/scope/status/supersedes/sections/claims`。`sections.text` 是可引用的原文；`claims` 是为了演示可复查冲突而人工整理的结构化声明，加载时验证声明引文确实在原文中。检索使用标题三倍权重和正文字符二元组重合计分，适合本题少量中文资料；它没有语义理解能力。`check_conflicts` 只对相同主题、相同范围且数值不同的声明给出冲突；未提供显式替代关系时不会因日期较新自动决定优先级。

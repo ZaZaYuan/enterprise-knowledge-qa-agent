@@ -15,7 +15,7 @@
 | 05 相似问法 | 与 01 同一依据 | `answered`，L01 引文 | `examples/mock/05-paraphrase.*` |
 | 06 差旅范围 | 用 D03，不套一般费用 | `answered`，D03 引文 | `examples/mock/06-travel-scope.*` |
 
-10 项单元测试通过，覆盖冲突、范围、资料不足、工具故障、伪造引用拒绝、未引用文档/数值拒绝、执行上限、正常证据链与 DeepSeek 请求格式。
+15 项单元测试通过，覆盖冲突、范围、资料不足、工具故障、伪造引用拒绝、未引用文档/数值拒绝、执行上限、正常证据链、上下文追问、历史输入校验、DeepSeek 请求格式和展示服务的 HTTP 行为。
 
 ## DeepSeek 真实运行结果
 
@@ -30,6 +30,9 @@
 | 远程办公天数 | `insufficient`；检索 → 读 R01 → 说明缺口 | 通过；`live-insufficient.*` |
 | 相似问法 | `answered`；检索 → 读 L01 → 回答 | 通过；`live-paraphrase.*` |
 | 检索故障 | `tool_error`；检索失败 → 再试失败 → 停止 | 通过；未伪造答案；`live-tool-failure.*` |
+| 上下文追问 | `answered`；带前轮问答 → 检索 → 读 L01 → 回答 | 通过；引用紧急情况原文；`live-follow-up.*` |
+
+另以 Chrome 对本地展示界面进行真实浏览器联调：逐一点击明确答案、资料冲突和资料缺口示例，等待真实模型返回后检查状态、证据卡片和工具轨迹。实际页面截图见 `docs/screenshots/01-home.png` 至 `04-insufficient.png`；截图仅证明可见结果，模型决策细节以 JSON Trace 为准。
 
 ## 已知问题与失效边界
 

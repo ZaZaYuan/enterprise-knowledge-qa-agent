@@ -12,3 +12,6 @@
 | 04 | 搜索工具故障 | 明确故障与未核实状态 |
 | 05 | 相似问法 | 与 01 相同的证据链 |
 | 06 | 差旅适用范围 | D03 的返程后期限，不误套一般费用规则 |
+| 07 | 上下文追问 | 结合 `context-history.json` 理解“那紧急情况呢？”并引用 L01 |
+
+真实模型追问记录见 `live/live-follow-up.json` 与同名输出文本；命令为 `python main.py ask "那紧急情况呢？" --provider deepseek --history examples/context-history.json --trace run-output/live-follow-up.json`。

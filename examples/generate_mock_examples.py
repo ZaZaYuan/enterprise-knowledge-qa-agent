@@ -20,6 +20,7 @@ CASES = {
     "04-tool-failure": ("一般费用报销期限多久？", "search_docs"),
     "05-paraphrase": ("事假需要提前多久报批？", None),
     "06-travel-scope": ("差旅报销应在返程后几天提交？", None),
+    "07-follow-up": ("那紧急情况呢？", None),
 }
 
 
@@ -28,9 +29,10 @@ def main():
     directory = ROOT / "examples" / "mock"
     directory.mkdir(parents=True, exist_ok=True)
     for name, (question, fail_tool) in CASES.items():
-        result = KnowledgeAgent(store, MockClient(), fail_tool=fail_tool).run(question)
+        history = json.loads((ROOT / "examples" / "context-history.json").read_text(encoding="utf-8")) if name == "07-follow-up" else []
+        result = KnowledgeAgent(store, MockClient(), fail_tool=fail_tool).run(question, history=history)
         (directory / f"{name}.input.json").write_text(
-            json.dumps({"question": question, "provider": "OFFLINE_MOCK", "fail_tool": fail_tool}, ensure_ascii=False, indent=2) + "\n",
+            json.dumps({"question": question, "history": history, "provider": "OFFLINE_MOCK", "fail_tool": fail_tool}, ensure_ascii=False, indent=2) + "\n",
             encoding="utf-8",
         )
         (directory / f"{name}.output.txt").write_text(render(result) + "\n", encoding="utf-8")

@@ -43,11 +43,21 @@ class KnowledgeAgent:
         self.max_steps = max_steps
         self.max_tool_calls = max_tool_calls
 
-    def run(self, question: str) -> dict:
+    def run(self, question: str, history: list[dict] | None = None) -> dict:
         if not question.strip() or len(question) > 500:
             raise ValueError("问题须为 1～500 字符")
+        history = history or []
+        if len(history) > 8 or any(
+            not isinstance(item, dict)
+            or item.get("role") not in {"user", "assistant"}
+            or not isinstance(item.get("content"), str)
+            or not 1 <= len(item["content"]) <= 1000
+            for item in history
+        ):
+            raise ValueError("历史只接受最多 8 条 user/assistant 文本消息，每条 1～1000 字符")
         messages = [
             {"role": "system", "content": SYSTEM_PROMPT},
+            *history,
             {"role": "user", "content": question.strip()},
         ]
         trace: list[dict] = []

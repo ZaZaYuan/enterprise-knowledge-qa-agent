@@ -1,5 +1,6 @@
 {
   "question": "事假需要提前多久报批？",
+  "history": [],
   "provider": "OFFLINE_MOCK",
   "fail_tool": null
 }

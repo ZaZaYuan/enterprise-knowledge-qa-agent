@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>知序 · 企业知识问答 Agent</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-mark">知<span>✳</span></div><div><strong>知序</strong><small>KNOWLEDGE ATLAS</small></div></div>
+    <div class="side-label">工作台</div>
+    <div class="nav active"><span class="nav-icon">⌕</span> 智能问答 <span class="nav-arrow">↗</span></div>
+    <div class="nav"><span class="nav-icon">▦</span> 证据档案 <span class="nav-count">05</span></div>
+    <div class="side-rule"></div>
+    <div class="side-label">演示问题</div>
+    <button class="scenario" data-question="普通事假要提前几天申请？"><span class="scenario-dot teal"></span><span>明确答案<small>事假提前申请</small></span></button>
+    <button class="scenario" data-question="一般费用报销期限多久？"><span class="scenario-dot amber"></span><span>资料冲突<small>30 天 · 15 天</small></span></button>
+    <button class="scenario" data-question="每月可以远程办公几天？"><span class="scenario-dot blue"></span><span>资料缺口<small>缺少频次规定</small></span></button>
+    <button class="scenario" data-question="那紧急情况呢？"><span class="scenario-dot lilac"></span><span>上下文追问<small>接续事假问答</small></span></button>
+    <div class="sidebar-bottom"><div class="bottom-stars">✦ ✧</div><strong>每个答案，都有来处。</strong><p>让制度检索、原文核对与决策过程清晰可见。</p></div>
+    <div class="sidebar-foot"><span>KNOWLEDGE ATLAS</span><span>© 2026</span></div>
+  </aside>
+  <main class="main">
+    <header class="topbar"><div>工作台 <span>/</span> 智能问答</div><div class="top-status"><i></i><span id="provider">正在连接</span><b>LOCAL</b></div></header>
+    <div class="workspace">
+      <section class="intro"><div class="intro-left"><div class="eyebrow"><span>✳</span> EVIDENCE FIRST · AGENT WORKSPACE</div><h1>从问题出发，<br><em>让证据说话。</em></h1><p>检索原文、核对冲突、追踪每一步决策。清楚回答，也清楚说明何时不能回答。</p><div class="intro-tags"><span>可核查引用</span><span>冲突感知</span><span>执行轨迹</span></div></div><div class="intro-art" aria-hidden="true"><div class="orbit orbit-a"></div><div class="orbit orbit-b"></div><div class="art-card art-one">D01 <span>30 DAYS</span></div><div class="art-card art-two">D02 <span>15 DAYS</span></div><div class="art-core">?</div><div class="art-caption">THE ANSWER LIVES IN THE EVIDENCE</div></div></section>
+      <section class="ask-section"><div class="section-head"><div><div class="eyebrow">ASK THE KNOWLEDGE BASE</div><h2>提出你的问题<span>.</span></h2></div><div class="section-note">5 份合成制度 · 4 个工具 · 有界决策</div></div>
+        <form id="ask-form"><label class="visually-hidden" for="question">输入问题</label><div class="composer"><textarea id="question" rows="2" placeholder="例如：一般费用报销期限多久？" required></textarea><div class="composer-foot"><div class="composer-hint"><span>↵</span> 输入具体问题，Agent 会自行选择工具核查</div><button id="submit" type="submit">开始核查 <span>→</span></button></div></div></form>
+        <div class="examples"><span>试试这些问题</span><button data-question="普通事假要提前几天申请？">事假提前几天？ ↗</button><button data-question="一般费用报销期限多久？">报销期限冲突 ↗</button><button data-question="每月可以远程办公几天？">远程办公天数 ↗</button></div>
+      </section>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <section id="result" class="result" hidden><div class="section-head result-head"><div><div class="eyebrow">VERIFIED RESPONSE</div><h2>核查结果<span>.</span></h2></div><button id="download" class="subtle-button" type="button">↓ 下载 Trace</button></div><div class="result-grid"><article class="answer-card"><div class="card-top"><span id="result-badge" class="badge"></span><span id="meta" class="meta"></span></div><h3 id="result-question"></h3><p id="answer"></p><div id="missing" class="missing" hidden></div></article><aside class="evidence-card"><div class="card-title"><span>▣</span><div>原文依据<small>SOURCE EVIDENCE</small></div></div><div id="citations"></div></aside></div><div class="trace-card"><div class="trace-head"><div><span>⌁</span> 决策轨迹 <small>DECISION TRACE</small></div><span>模型选动作 → 工具返回 → 下一步</span></div><div id="trace" class="trace-list"></div></div></section>
+      <footer><span>知序 · 企业知识问答 Agent</span><span>合成资料演示 · 所有结论以原文为准</span></footer>
+    </div>
+  </main>
+</div>
+<script src="/app.js" defer></script>
+</body>
+</html>

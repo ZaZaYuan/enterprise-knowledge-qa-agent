@@ -1,8 +1,34 @@
 # 证据优先的企业知识问答 Agent
 
-面向制度/FAQ 问答的可运行 CLI。Agent 使用模型选择“检索 → 阅读原文 → 核对冲突 → 回答/追问/停止”的下一步动作；程序提供只读工具、执行上限、逐字引用验证和可复查 Trace。资料全部是合成示例，不含真实公司信息。
+面向制度/FAQ 问答的可运行 Agent，提供本地展示界面与可复现 CLI。Agent 使用真实模型选择“检索 → 阅读原文 → 核对冲突 → 回答/追问/停止”的下一步动作；程序提供只读工具、执行上限、逐字引用验证和可复查 Trace。资料全部是合成示例，不含真实公司信息。
 
 > 当前交付状态：离线 Mock 流程、真实 DeepSeek 模型运行、自动测试和文档均已完成。`examples/mock/` 与 `examples/live/` 严格区分；真实运行的首次冲突回答暴露了未引用旁支事实，修复与复测记录一并保留。仓库地址为 <https://github.com/ZaZaYuan/enterprise-knowledge-qa-agent>；最终验收提交以仓库的 `main` 分支 SHA 为准。
+
+## 实际运行截图
+
+截图来自本地展示界面和**真实 DeepSeek 调用**，不是设计稿或离线 Mock。界面只在 `127.0.0.1` 监听；截图中的资料为合成制度。
+
+| 问答工作台 | 有依据的明确答案 |
+| --- | --- |
+| ![问答工作台](docs/screenshots/01-home.png) | ![明确答案与原文引用](docs/screenshots/02-answer.png) |
+
+| 冲突说明与决策轨迹 | 资料缺口与补充问题 |
+| --- | --- |
+| ![冲突说明与决策轨迹](docs/screenshots/03-conflict.png) | ![资料缺口](docs/screenshots/04-insufficient.png) |
+
+图片能展示界面，实际模型路径、修正与失败记录请查看 `examples/live/` 的 JSON Trace。
+
+## 启动本地展示界面
+
+先按下节设置 `DEEPSEEK_API_KEY`，在项目根目录运行：
+
+```powershell
+python webui.py --provider deepseek --port 8765
+```
+
+打开 <http://127.0.0.1:8765>。左侧示例可一键运行正常回答、报销冲突、资料缺口和上下文追问；结果区同屏显示答案、原文引用、待补事项和工具轨迹，并可下载完整 Trace。页面会保留当前会话最近 8 条问答作为追问上下文，刷新页面后清空。无需真实模型时可用 `python webui.py --provider mock` 验证界面，但状态会显示 `OFFLINE · MOCK`，其结果不能用作真实模型效果证据。按 `Ctrl+C` 停止服务。
+
+展示服务使用 Python 标准库 `ThreadingHTTPServer`，仅绑定本机回环地址，不对公网开放。`GET /api/health` 返回模型模式和资料数量，`POST /api/ask` 接收 `{ "question": "...", "history": [...] }` 并返回与 CLI 相同的答案及 Trace；密钥始终由服务端环境变量读取，不发送到浏览器。网页里的演示问题仅用于快速触发真实查询。
 
 ## 30 秒运行
 
@@ -12,6 +38,7 @@
 python main.py list-docs
 python main.py ask "普通事假要提前几天申请？" --provider mock
 python main.py ask "一般费用报销期限多久？" --provider mock --trace run-output/conflict.json
+python main.py ask "那紧急情况呢？" --provider mock --history examples/context-history.json
 python -m unittest discover -s tests -v
 ```
 
@@ -28,19 +55,49 @@ python main.py ask "一般费用报销期限多久？" --provider deepseek --tra
 
 ```text
 main.py                         CLI 入口
+webui.py                        本地展示服务入口
+web/                            问答工作台 HTML/CSS/JS
 src/knowledge_agent/
   agent.py                      有界模型决策循环、引用和冲突校验
   providers.py                  DeepSeek HTTP 适配器、明确标记的离线 Mock
   store.py                      合成文档、中文字符二元组检索、冲突核对
   tools.py                      模型可选工具和参数校验
   cli.py                        终端输出和 JSON Trace 保存
+  web.py                        本机 HTTP 展示服务
 data/documents.json             带 ID、版本、范围与原文的合成制度
 tests/test_agent.py             可执行自动测试
 examples/mock/                 输入、实际输出、完整 Trace
+examples/live/                 真实 DeepSeek 输出与 Trace
+docs/screenshots/              真实运行界面截图
 docs/                          需求、方案、评估、AI 使用和复盘
 ```
 
 提交材料位于同一个仓库。`requirements.txt` 记录核心运行无第三方依赖；`.env.example` 仅列出变量名，不含密钥。`run-output/` 被 Git 忽略，供本机试运行。可用 `python examples/generate_mock_examples.py` 重建 Mock 示例。
+
+```mermaid
+flowchart LR
+  U[用户问题与可选历史] --> M[DeepSeek 模型选择动作]
+  M --> T{只读工具}
+  T --> S[检索资料]
+  T --> R[读取原文]
+  T --> C[核对冲突]
+  S --> O[观察结果与 Trace]
+  R --> O
+  C --> O
+  O --> M
+  M --> V[提交答案与证据校验]
+  V --> A[回答／追问／故障／未完成]
+```
+
+| 题目验收点 | 实现与可核查证据 |
+| --- | --- |
+| 模型选择动作并根据结果调整 | `agent.py` 有界循环；`examples/live/live-conflict-final.json` 包含被护栏拒绝后模型修正的步骤 |
+| 至少两种执行路径 | 普通事假“检索→读原文→回答”；一般报销“检索→读两份原文→核冲突→修正并追问” |
+| 引用、资料缺口和任务状态 | CLI 和网页同时展示；每份引用逐字核对已读文档 |
+| 冲突、资料不足、工具失败 | `examples/live/` 保存真实输出与 Trace，`docs/03-evaluation.md` 记录结果 |
+| 相似问法与上下文追问 | `live-paraphrase`、`live-follow-up`；历史只接受最多 8 条 user/assistant 文本 |
+| 防无限执行 | 默认 9 次模型决策、12 次工具调用，到上限返回明确的 `incomplete` |
+| 工程交付 | 标准库测试、GitHub Actions、合成资料、五份指定文档与真实截图 |
 
 ## 交互、工具与约束
 
@@ -56,7 +113,7 @@ docs/                          需求、方案、评估、AI 使用和复盘
 2. **资料冲突**：问“一般费用报销期限多久？”。D01 写 30 个自然日，D02 写 15 个自然日，范围相同且没有显式替代关系；应列出两处原文、标记冲突并请求确认，不擅自选择 15 天。
 3. **资料不足或故障**：问“每月可以远程办公几天？”时，R01 明确未规定天数，应说明缺口；用 `--fail-tool search_docs` 模拟检索故障时，应给出工具故障而非猜测。
 
-另外提供“事假需要提前多久报批？”相似问法及“差旅报销应在返程后几天提交？”范围区分样例。输入、实际输出和 Trace 见 [`examples/README.md`](examples/README.md)、`examples/mock/` 与 `examples/live/`。`OFFLINE_MOCK` 只是固定脚本，不可作为真实模型决策质量的证据；`examples/live/` 保存实际 DeepSeek 运行，包括首次冲突回答的不足与修正过程。
+另外提供“事假需要提前多久报批？”相似问法、“差旅报销应在返程后几天提交？”范围区分，以及带 `--history examples/context-history.json` 的“那紧急情况呢？”上下文追问样例。输入、实际输出和 Trace 见 [`examples/README.md`](examples/README.md)、`examples/mock/` 与 `examples/live/`。`OFFLINE_MOCK` 只是固定脚本，不可作为真实模型决策质量的证据；`examples/live/` 保存实际 DeepSeek 运行，包括首次冲突回答的不足与修正过程。
 
 ## 测试与评价
 

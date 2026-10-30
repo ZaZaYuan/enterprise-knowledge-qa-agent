@@ -47,6 +47,7 @@ def main(argv: list[str] | None = None) -> int:
     ask.add_argument("question", help="自然语言问题")
     ask.add_argument("--provider", choices=["deepseek", "mock"], default="deepseek")
     ask.add_argument("--trace", type=Path, help="保存完整 JSON 输出与执行记录")
+    ask.add_argument("--history", type=Path, help="可选：包含前序 user/assistant 消息的 JSON 文件")
     ask.add_argument("--max-steps", type=int, default=9)
     ask.add_argument("--max-tools", type=int, default=12)
     ask.add_argument("--fail-tool", choices=["search_docs", "read_doc", "check_conflicts"], help="仅用于故障演示")
@@ -64,10 +65,14 @@ def main(argv: list[str] | None = None) -> int:
     except ModelError as exc:
         print(str(exc), file=sys.stderr)
         return 2
+    try:
+        history = json.loads(args.history.read_text(encoding="utf-8")) if args.history else []
+    except (OSError, ValueError) as exc:
+        parser.error("无法读取历史 JSON：" + str(exc))
     result = KnowledgeAgent(
         store, model, max_steps=args.max_steps, max_tool_calls=args.max_tools,
         fail_tool=args.fail_tool,
-    ).run(args.question)
+    ).run(args.question, history=history)
     print(render(result))
     if args.trace:
         args.trace.parent.mkdir(parents=True, exist_ok=True)

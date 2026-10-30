@@ -52,6 +52,12 @@ class AgentTests(unittest.TestCase):
         self.assertEqual(result["status"], "insufficient")
         self.assertIn("所在部门", result["missing_info"][0])
 
+    def test_related_candidate_without_answer_is_insufficient(self):
+        result = KnowledgeAgent(self.store, MockClient()).run("年假申请流程是什么？")
+        self.assertEqual(result["status"], "insufficient")
+        self.assertIn("read_doc", [event["action"] for event in result["trace"]])
+        self.assertEqual(result["steps"], 3)
+
     def test_follow_up_uses_prior_question_context(self):
         history = json.loads((ROOT / "examples" / "context-history.json").read_text(encoding="utf-8"))
         result = KnowledgeAgent(self.store, MockClient()).run("那紧急情况呢？", history=history)

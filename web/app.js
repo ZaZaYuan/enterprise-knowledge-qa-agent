@@ -3,6 +3,7 @@ const statusNames = {answered:'已核实回答', conflict:'资料冲突 · 待�
 const actionNames = {search_docs:'检索资料', read_doc:'读取原文', check_conflicts:'核对冲突', submit_answer:'提交答案', protocol_error:'协议校验'};
 let history = [];
 let lastResult = null;
+let inFlight = false;
 
 async function health(){
   try{const res=await fetch('/api/health');const data=await res.json();$('provider').textContent=`${data.provider==='deepseek'?'DEEPSEEK · LIVE':'OFFLINE · MOCK'} · ${data.document_count} 份资料`;}
@@ -32,16 +33,20 @@ function render(result){
 }
 
 async function ask(question){
+  if(inFlight)return;
+  inFlight=true;
   const submit=$('submit');submit.disabled=true;submit.textContent='正在核查…';showNotice('Agent 正在检索资料并核对原文，请稍候。');
   try{
     const response=await fetch('/api/ask',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({question,history})});
     const data=await response.json();
     if(!response.ok)throw new Error(data.error||'请求失败');
     render(data);clearNotice();
-    history.push({role:'user',content:question},{role:'assistant',content:data.answer});
-    history=history.slice(-8);
+    if(['answered','conflict','insufficient'].includes(data.status)){
+      history.push({role:'user',content:question},{role:'assistant',content:data.answer});
+      history=history.slice(-8);
+    }
   }catch(error){showNotice(error.message||'服务不可用',true);}
-  finally{submit.disabled=false;submit.innerHTML='开始核查 <span>→</span>';}
+  finally{inFlight=false;submit.disabled=false;submit.innerHTML='开始核查 <span>→</span>';}
 }
 
 $('ask-form').addEventListener('submit',(event)=>{event.preventDefault();const question=$('question').value.trim();if(question)ask(question);});

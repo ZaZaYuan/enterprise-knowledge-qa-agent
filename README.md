@@ -2,7 +2,7 @@
 
 面向制度/FAQ 问答的可运行 Agent，提供本地展示界面与可复现 CLI。Agent 使用真实模型选择“检索 → 阅读原文 → 核对冲突 → 回答/追问/停止”的下一步动作；程序提供只读工具、执行上限、逐字引用验证和可复查 Trace。资料全部是合成示例，不含真实公司信息。
 
-> 当前交付状态：离线 Mock 流程、真实 DeepSeek 模型运行、自动测试和文档均已完成。`examples/mock/` 与 `examples/live/` 严格区分；真实运行的首次冲突回答暴露了未引用旁支事实，修复与复测记录一并保留。仓库地址为 <https://github.com/ZaZaYuan/enterprise-knowledge-qa-agent>；最终验收提交以仓库的 `main` 分支 SHA 为准。
+> 当前交付状态：离线 Mock 流程、真实 DeepSeek 模型运行、自动测试和文档均已完成。`examples/mock/` 与 `examples/live/` 严格区分；真实运行的首次冲突回答暴露了未引用旁支事实，修复与复测记录一并保留。2026-10-30 的补充审计见 [`docs/03-evaluation.md`](docs/03-evaluation.md)。仓库地址为 <https://github.com/ZaZaYuan/enterprise-knowledge-qa-agent>；最终验收提交以仓库的 `main` 分支 SHA 为准。
 
 ## 实际运行截图
 
@@ -122,7 +122,7 @@ python -m unittest discover -s tests -v
 python examples/generate_mock_examples.py
 ```
 
-测试检查正常路径有引用、冲突不因较新日期被静默消除、不同范围不误判冲突、资料不足不编造、工具故障区分、伪造引用被拒绝、达到上限明确返回未完成。真实模型的评估记录和未达预期情况填写在 [`docs/03-evaluation.md`](docs/03-evaluation.md)。
+18 项自动测试检查正常路径有引用、冲突不因较新日期被静默消除、不同范围不误判冲突、资料不足不编造、工具故障区分、伪造引用被拒绝、达到上限明确返回未完成，以及网页的正常响应、输入拒绝和未知路径处理。真实模型的评估记录和未达预期情况填写在 [`docs/03-evaluation.md`](docs/03-evaluation.md)。
 
 ## 已知限制与安全边界
 

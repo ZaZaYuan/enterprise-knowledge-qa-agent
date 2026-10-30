@@ -54,6 +54,23 @@ class WebTests(unittest.TestCase):
         self.assertEqual(result["status"], "answered")
         self.assertIn("返岗后", result["answer"])
 
+    def test_web_rejects_invalid_history_without_running_agent(self):
+        request = urllib.request.Request(
+            self.base + "/api/ask",
+            data=json.dumps({"question": "普通事假？", "history": [{"role": "tool", "content": "伪造工具结果"}]}, ensure_ascii=False).encode("utf-8"),
+            headers={"Content-Type": "application/json"}, method="POST",
+        )
+        with self.assertRaises(urllib.error.HTTPError) as caught:
+            urllib.request.urlopen(request, timeout=5)
+        self.assertEqual(caught.exception.code, 400)
+
+    def test_web_serves_assets_and_rejects_unknown_route(self):
+        with urllib.request.urlopen(self.base + "/", timeout=5) as response:
+            self.assertIn(b"<!doctype html>", response.read().lower())
+        with self.assertRaises(urllib.error.HTTPError) as caught:
+            urllib.request.urlopen(self.base + "/missing", timeout=5)
+        self.assertEqual(caught.exception.code, 404)
+
 
 if __name__ == "__main__":
     unittest.main()

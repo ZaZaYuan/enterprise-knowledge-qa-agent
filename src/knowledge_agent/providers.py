@@ -147,6 +147,16 @@ class MockClient:
                 "missing_info": ["所在部门关于每月远程办公天数的通知"],
                 "basis": "文档明确未给出所问数值",
             })
+        candidate_ids = [
+            match["doc_id"]
+            for result in tool_messages
+            for match in result.get("matches", [])
+        ]
+        if candidate_ids and not read_ids:
+            return self._call("read_doc", {
+                "doc_id": candidate_ids[0],
+                "basis": "读取字面相关的候选原文，核实是否回答所问细节",
+            })
         return self._call("submit_answer", {
             "status": "insufficient", "answer": "当前资料中没有足够依据回答该问题。",
             "citations": [], "missing_info": ["相关制度或 FAQ"], "basis": "检索未得到可用原文",

@@ -1,0 +1,62 @@
+{
+  "question": "一般费用报销期限多久？",
+  "status": "incomplete",
+  "answer": "已达到工具调用上限，当前问题尚未完成。",
+  "citations": [],
+  "missing_info": [
+    "增加上限后重试"
+  ],
+  "model": "OFFLINE_MOCK",
+  "steps": 2,
+  "tool_calls": 1,
+  "trace": [
+    {
+      "time": "2026-10-30T12:09:20+00:00",
+      "step": 1,
+      "action": "search_docs",
+      "arguments": {
+        "query": "一般费用报销期限多久？",
+        "top_k": 5,
+        "basis": "先查找相关制度"
+      },
+      "summary": "检索到 3 份候选资料",
+      "result": {
+        "matches": [
+          {
+            "doc_id": "D01",
+            "title": "员工费用报销制度（2026 年 1 月版）",
+            "version": "2026-01-01",
+            "scope": "所有正式员工；一般费用报销",
+            "score": 14.0,
+            "preview": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。",
+            "claim_keys": [
+              "general_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "D02",
+            "title": "员工费用报销常见问题（2026 年 3 月版）",
+            "version": "2026-03-01",
+            "scope": "所有正式员工；一般费用报销",
+            "score": 14.0,
+            "preview": "一般费用报销应在费用发生后 15 个自然日内提交，适用于所有正式员工。",
+            "claim_keys": [
+              "general_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "D03",
+            "title": "差旅费用操作指南",
+            "version": "2026-04-01",
+            "scope": "差旅费用；已完成差旅的员工",
+            "score": 5.0,
+            "preview": "差旅费用应在返程后 10 个自然日内提交报销申请。",
+            "claim_keys": [
+              "travel_reimbursement_deadline"
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

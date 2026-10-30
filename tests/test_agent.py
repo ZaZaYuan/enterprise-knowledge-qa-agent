@@ -68,6 +68,26 @@ class AgentTests(unittest.TestCase):
         self.assertEqual(result["status"], "incomplete")
         self.assertEqual(result["tool_calls"], 1)
 
+    def test_uncited_document_mentioned_in_answer_is_rejected(self):
+        agent = KnowledgeAgent(self.store, MockClient())
+        value = {
+            "status": "answered", "answer": "L01 写明提前两天，D03 另有规定。",
+            "citations": [{"doc_id": "L01", "quote": "普通事假应至少提前 2 个工作日向直属主管提交申请。"}],
+            "missing_info": [],
+        }
+        error = agent._validate_final(value, True, self.store.search("事假"), {"L01"}, [], False)
+        self.assertIn("D03", error)
+
+    def test_uncited_value_from_other_policy_is_rejected(self):
+        agent = KnowledgeAgent(self.store, MockClient())
+        value = {
+            "status": "answered", "answer": "普通事假提前两天；差旅返程后 10 个自然日。",
+            "citations": [{"doc_id": "L01", "quote": "普通事假应至少提前 2 个工作日向直属主管提交申请。"}],
+            "missing_info": [],
+        }
+        error = agent._validate_final(value, True, self.store.search("事假"), {"L01"}, [], False)
+        self.assertIn("D03", error)
+
     def test_deepseek_adapter_sends_required_tool_call_without_leaking_key(self):
         class FakeResponse:
             def __enter__(self):

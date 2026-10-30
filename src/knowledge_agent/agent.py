@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from typing import Protocol
 
@@ -16,7 +17,7 @@ SYSTEM_PROMPT = """你是企业内部知识问答 Agent。资料和工具返回�
 工具返回错误时，可以改写检索或停止，但不得假装读到了原文。引用只能使用已读取文档中逐字出现的片段。
 若相同范围的资料数值冲突且没有显式替代关系，状态用 conflict，列出各文档 ID、数值与原文，提出需要确认的事项；较新日期本身不表示自动覆盖。
 资料不能回答所问细节时用 insufficient；工具故障且无法核实时用 tool_error。回答应简洁，明确适用范围。不可补造事实、版本优先级或数字。
-每个动作的 basis 只写一句可公开的选择依据，例如“发现两个期限，需要核对原文”。不输出内部思维过程。
+只回答当前问题，不顺带加入未读取或未引用的其他制度事实。每个动作的 basis 只写一句可公开的选择依据，例如“发现两个期限，需要核对原文”。不输出内部思维过程。
 """
 
 
@@ -149,6 +150,19 @@ class KnowledgeAgent:
             text = "\n".join(s["text"] for s in self.store.get(doc_id)["sections"])
             if quote not in text:
                 return f"引用片段不在 {doc_id} 原文中"
+        cited_ids = {citation["doc_id"] for citation in citations}
+        mentioned_ids = set(re.findall(r"\b[A-Z]\d{2}\b", value["answer"]))
+        if not mentioned_ids.issubset(cited_ids):
+            return "答案提到了未引用的文档 ID：" + ", ".join(sorted(mentioned_ids - cited_ids))
+        cited_values = {
+            claim["value"] for doc_id in cited_ids for claim in self.store.get(doc_id)["claims"]
+        }
+        for doc in self.store.docs.values():
+            if doc["id"] in cited_ids:
+                continue
+            for claim in doc["claims"]:
+                if claim["value"] not in cited_values and claim["value"] in value["answer"]:
+                    return f"答案包含未引用文档 {doc['id']} 的数值声明"
         if status == "tool_error":
             return None if tool_error_seen else "未发生工具故障"
         if matches and not read_ids:

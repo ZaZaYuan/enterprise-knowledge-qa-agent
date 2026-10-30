@@ -2,7 +2,7 @@
 
 面向制度/FAQ 问答的可运行 CLI。Agent 使用模型选择“检索 → 阅读原文 → 核对冲突 → 回答/追问/停止”的下一步动作；程序提供只读工具、执行上限、逐字引用验证和可复查 Trace。资料全部是合成示例，不含真实公司信息。
 
-> 当前交付状态：本地离线 Mock 路径、工具、测试和文档已完成。`examples/mock/` 的运行记录只验证流程；真实 DeepSeek 模型记录须在本机配置新密钥后执行，未执行前不声称真实模型效果。仓库地址为 <https://github.com/ZaZaYuan/enterprise-knowledge-qa-agent>；最终验收提交以仓库的 `main` 分支 SHA 为准。
+> 当前交付状态：离线 Mock 流程、真实 DeepSeek 模型运行、自动测试和文档均已完成。`examples/mock/` 与 `examples/live/` 严格区分；真实运行的首次冲突回答暴露了未引用旁支事实，修复与复测记录一并保留。仓库地址为 <https://github.com/ZaZaYuan/enterprise-knowledge-qa-agent>；最终验收提交以仓库的 `main` 分支 SHA 为准。
 
 ## 30 秒运行
 
@@ -56,7 +56,7 @@ docs/                          需求、方案、评估、AI 使用和复盘
 2. **资料冲突**：问“一般费用报销期限多久？”。D01 写 30 个自然日，D02 写 15 个自然日，范围相同且没有显式替代关系；应列出两处原文、标记冲突并请求确认，不擅自选择 15 天。
 3. **资料不足或故障**：问“每月可以远程办公几天？”时，R01 明确未规定天数，应说明缺口；用 `--fail-tool search_docs` 模拟检索故障时，应给出工具故障而非猜测。
 
-另外提供“事假需要提前多久报批？”相似问法及“差旅报销应在返程后几天提交？”范围区分样例。输入、实际输出和 Trace 见 [`examples/README.md`](examples/README.md) 与 `examples/mock/`。示例中 `OFFLINE_MOCK` 只是固定脚本，不可作为真实模型决策质量的证据；真实模型验证应另存 `examples/live/`，标注模型、运行时间、结果和失败情况。
+另外提供“事假需要提前多久报批？”相似问法及“差旅报销应在返程后几天提交？”范围区分样例。输入、实际输出和 Trace 见 [`examples/README.md`](examples/README.md)、`examples/mock/` 与 `examples/live/`。`OFFLINE_MOCK` 只是固定脚本，不可作为真实模型决策质量的证据；`examples/live/` 保存实际 DeepSeek 运行，包括首次冲突回答的不足与修正过程。
 
 ## 测试与评价
 

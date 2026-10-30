@@ -2,7 +2,7 @@
 
 `mock/` 文件由 `python examples/generate_mock_examples.py` 实际生成，明确标记 `OFFLINE_MOCK`。它们只证明 CLI、工具、引用校验、冲突处理和执行上限的流程可以复现，**不证明真实模型会作出同样决策**。
 
-取得安全配置的真实 DeepSeek API 密钥后，使用 `python main.py ask "问题" --provider deepseek --trace examples/live/文件名.json` 逐条运行，再将终端输出、模型名和 Trace 放入 `examples/live/`。未真实执行前，不创建或伪造 live 文件。
+`live/` 保存 2026-10-30 使用真实 `deepseek-flash` 运行的 JSON Trace 与对应终端输出。运行时从本机 `DEEPSEEK_API_KEY` 读取凭据；文件内没有密钥。`live-conflict.json` 是首次回答：状态为 `conflict`，但人工复核发现顺带提及未引用的差旅期限；它保留为失败证据。加入额外引用校验后，`live-conflict-fixed.json` 仍暴露同类缺口；`live-conflict-final.json` 的 Trace 记录了程序拒绝未引用数值、模型修正后再次提交的过程。不要把首次状态码 `conflict` 误当成内容全部合格。
 
 | 编号 | 问题类型 | 预期重点 |
 | --- | --- | --- |

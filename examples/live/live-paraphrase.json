@@ -1,0 +1,139 @@
+{
+  "question": "事假需要提前多久报批？",
+  "status": "answered",
+  "answer": "按《员工请假制度》（2026-02-15，适用于所有正式员工的普通事假）：普通事假应至少提前 2 个工作日向直属主管提交申请。突发紧急情况可先电话告知主管，并在返岗后补交申请。",
+  "citations": [
+    {
+      "doc_id": "L01",
+      "quote": "普通事假应至少提前 2 个工作日向直属主管提交申请。"
+    },
+    {
+      "doc_id": "L01",
+      "quote": "突发紧急情况可先电话告知主管，并在返岗后补交申请。"
+    }
+  ],
+  "missing_info": [],
+  "model": "deepseek-flash",
+  "steps": 3,
+  "tool_calls": 3,
+  "trace": [
+    {
+      "time": "2026-10-30T10:42:20+00:00",
+      "step": 1,
+      "action": "search_docs",
+      "arguments": {
+        "query": "事假 提前 报批 申请 时限",
+        "basis": "需要检索事假报批时限的制度依据"
+      },
+      "summary": "检索到 4 份候选资料",
+      "result": {
+        "matches": [
+          {
+            "doc_id": "L01",
+            "title": "员工请假制度",
+            "version": "2026-02-15",
+            "scope": "所有正式员工；普通事假",
+            "score": 3.0,
+            "preview": "普通事假应至少提前 2 个工作日向直属主管提交申请。",
+            "claim_keys": [
+              "personal_leave_notice"
+            ]
+          },
+          {
+            "doc_id": "D01",
+            "title": "员工费用报销制度（2026 年 1 月版）",
+            "version": "2026-01-01",
+            "scope": "所有正式员工；一般费用报销",
+            "score": 1.0,
+            "preview": "所有正式员工应在费用发生后 30 个自然日内提交一般费用报销申请。",
+            "claim_keys": [
+              "general_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "D03",
+            "title": "差旅费用操作指南",
+            "version": "2026-04-01",
+            "scope": "差旅费用；已完成差旅的员工",
+            "score": 1.0,
+            "preview": "差旅费用应在返程后 10 个自然日内提交报销申请。",
+            "claim_keys": [
+              "travel_reimbursement_deadline"
+            ]
+          },
+          {
+            "doc_id": "R01",
+            "title": "远程办公说明",
+            "version": "2026-05-10",
+            "scope": "所有员工；远程办公",
+            "score": 1.0,
+            "preview": "员工可申请远程办公，具体审批流程以所在部门通知为准。",
+            "claim_keys": []
+          }
+        ]
+      }
+    },
+    {
+      "time": "2026-10-30T10:42:21+00:00",
+      "step": 2,
+      "action": "read_doc",
+      "arguments": {
+        "doc_id": "L01",
+        "basis": "检索到请假制度，需核对原文"
+      },
+      "summary": "已读取 L01 原文",
+      "result": {
+        "document": {
+          "id": "L01",
+          "title": "员工请假制度",
+          "version": "2026-02-15",
+          "scope": "所有正式员工；普通事假",
+          "status": "生效中",
+          "supersedes": [],
+          "sections": [
+            {
+              "id": "L01-1",
+              "text": "普通事假应至少提前 2 个工作日向直属主管提交申请。"
+            },
+            {
+              "id": "L01-2",
+              "text": "突发紧急情况可先电话告知主管，并在返岗后补交申请。"
+            }
+          ],
+          "claims": [
+            {
+              "key": "personal_leave_notice",
+              "value": "2 个工作日",
+              "quote": "普通事假应至少提前 2 个工作日向直属主管提交申请。"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "time": "2026-10-30T10:42:22+00:00",
+      "step": 3,
+      "action": "submit_answer",
+      "arguments": {
+        "status": "answered",
+        "answer": "按《员工请假制度》（2026-02-15，适用于所有正式员工的普通事假）：普通事假应至少提前 2 个工作日向直属主管提交申请。突发紧急情况可先电话告知主管，并在返岗后补交申请。",
+        "citations": [
+          {
+            "doc_id": "L01",
+            "quote": "普通事假应至少提前 2 个工作日向直属主管提交申请。"
+          },
+          {
+            "doc_id": "L01",
+            "quote": "突发紧急情况可先电话告知主管，并在返岗后补交申请。"
+          }
+        ],
+        "missing_info": [],
+        "basis": "已读取请假制度原文，其中明确普通事假的提前申请时限"
+      },
+      "summary": "最终答案已通过引用与冲突校验",
+      "result": {
+        "accepted": true
+      }
+    }
+  ]
+}

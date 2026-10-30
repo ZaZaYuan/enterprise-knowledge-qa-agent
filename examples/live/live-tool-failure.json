@@ -1,0 +1,58 @@
+{
+  "question": "普通事假要提前几天申请？",
+  "status": "tool_error",
+  "answer": "无法回答：检索工具（search_docs）连续两次返回故障，未能获取任何文档，因此无法核实普通事假需提前几天申请的规定。请稍后重试或提供相关制度文档。",
+  "citations": [],
+  "missing_info": [
+    "事假申请提前期的制度原文（检索工具故障，未能读取任何文档）"
+  ],
+  "model": "deepseek-flash",
+  "steps": 3,
+  "tool_calls": 3,
+  "trace": [
+    {
+      "time": "2026-10-30T10:42:19+00:00",
+      "step": 1,
+      "action": "search_docs",
+      "arguments": {
+        "query": "普通事假 提前几天申请",
+        "basis": "需要检索事假申请提前期的规定"
+      },
+      "summary": "search_docs 暂时不可用（演示故障）",
+      "result": {
+        "error": "search_docs 暂时不可用（演示故障）"
+      }
+    },
+    {
+      "time": "2026-10-30T10:42:21+00:00",
+      "step": 2,
+      "action": "search_docs",
+      "arguments": {
+        "query": "事假 请假流程 申请时限",
+        "basis": "检索工具报错，改写查询再试一次"
+      },
+      "summary": "search_docs 暂时不可用（演示故障）",
+      "result": {
+        "error": "search_docs 暂时不可用（演示故障）"
+      }
+    },
+    {
+      "time": "2026-10-30T10:42:22+00:00",
+      "step": 3,
+      "action": "submit_answer",
+      "arguments": {
+        "status": "tool_error",
+        "answer": "无法回答：检索工具（search_docs）连续两次返回故障，未能获取任何文档，因此无法核实普通事假需提前几天申请的规定。请稍后重试或提供相关制度文档。",
+        "citations": [],
+        "missing_info": [
+          "事假申请提前期的制度原文（检索工具故障，未能读取任何文档）"
+        ],
+        "basis": "检索工具持续故障，无法读取原文核实"
+      },
+      "summary": "最终答案已通过引用与冲突校验",
+      "result": {
+        "accepted": true
+      }
+    }
+  ]
+}
